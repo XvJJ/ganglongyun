@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+<meta content="telephone=no" name="format-detection" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<title>诺之舟教育</title>
+<meta name="description" content="">
+<meta name="keywords" content="" />
+<link rel="stylesheet" href="__TMPL__Public/assets/images/nzzimg/style.css">
+<link rel="stylesheet" href="__TMPL__Public/assets/images/nzzimg/base.css">
+<script type="text/javascript" src="__TMPL__Public/assets/images/nzzimg/jquery.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<script type="text/javascript"> 
+  var SysSecond; 
+  var InterValObj;
+  var total = $("#minger").text();
+  // alert(total);
+
+  if (total==0) {
+    $("#qg").removeAttr("href");
+  }
+  
+  $(document).ready(function() {
+    SysSecond = parseInt($("#remainSeconds").html()); //这里获取倒计时的起始时间 
+    InterValObj = window.setInterval(SetRemainTime, 1000); //间隔函数，1秒执行 
+  }); 
+ 
+  //将时间减去1秒，计算天、时、分、秒 
+  function SetRemainTime() { 
+    if (SysSecond > 0) { 
+      SysSecond = SysSecond - 1; 
+      var second = Math.floor(SysSecond % 60);             // 计算秒     
+      var minite = Math.floor((SysSecond / 60) % 60);      //计算分 
+      var hour = Math.floor((SysSecond / 3600) % 24);      //计算小时 
+      var day = Math.floor((SysSecond / 3600) / 24);        //计算天 
+ 
+      $("#remainTime").html(day + "天" + hour + "小时" + minite + "分" + second + "秒"); 
+    }else{
+      //剩余时间小于或等于0的时候，就停止间隔函数 
+      window.clearInterval(InterValObj); 
+      //这里可以添加倒计时时间为0后需要执行的事件 
+    } 
+  } 
+
+  wx.config({
+    debug: false,
+    appId: '{$signPackage.appId}',
+    timestamp: {$signPackage.timestamp},
+    nonceStr: '{$signPackage.nonceStr}',
+    signature: '{$signPackage.signature}',
+    jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline']
+  });
+  wx.ready(function () {
+    var shareData = {
+      title: '诺之舟国际教育',
+      desc: '诺之舟国际教育，常州培训基地，加入我们 梦想将在这里起航！',
+      link: '',
+      imgUrl: 'http://ywj.ganglongyun.com/themes/simplebootx/Public/assets/images/nzzimg/lzz.jpg',
+      success: function () { 
+        alert("分享成功");
+      },
+      cancel: function () { 
+        alert("取消分享");
+      }
+    };
+    wx.onMenuShareAppMessage(shareData);
+    wx.onMenuShareTimeline(shareData);  
+  });
+</script>
+<body>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/banner.png"></div>
+<div class="time ">
+  <div class="timeleft fl">
+    <div class="sy fl"> <img src="__TMPL__Public/assets/images/nzzimg/sy.png" class="fl">
+      <div class="fr">
+        <div id="remainSeconds" style="display:none">{$sumsec}</div>
+        <div id="remainTime"></div>
+      </div>
+    </div>
+    <div class="mr fl"> <img src="__TMPL__Public/assets/images/nzzimg/mr.png">
+      <div class="fr">
+        <div id="minger">仅剩<b style="color: red;font-size: 1.5rem" id="total"> {$total} </b>个名额</div>
+      </div>
+    </div>
+  </div>
+  <div class="timeright fr">
+    <a href="{:U('Portal/Email/index_post')}" id="qg">
+      <img src="__TMPL__Public/assets/images/nzzimg/qg.png">
+    </a> 
+  </div>
+</div>
+
+<div class="mT10 clr"></div>
+<div style="width:96%; border:#000 dashed 1px; margin:5% auto ;"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/aaa.jpg"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad31.jpg"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad4.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad5.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad6.png"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad7.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad8.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad9.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/ad10.png"></div>
+<div class="mT10"></div>
+<div class="box"><img src="__TMPL__Public/assets/images/nzzimg/foot.png"></div>
+</body>
+</html>

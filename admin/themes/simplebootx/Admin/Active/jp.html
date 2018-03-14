@@ -1,0 +1,48 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Active/jp')}">奖品列表</a></li>
+			<li><a href="{:U('Active/jpadd')}">添加奖品</a></li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Active/jp')}">
+			所属活动：<select name="hdid">
+				<option value="">--请选择--</option>
+				<volist name="res_hd" id="hd">
+				<option value="{$hd.id}" <?php if($hdid==$hd['id']) echo "selected";?>>{$hd.name}</option>
+				</volist>
+			</select>&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary">搜索</button>
+			<a class="btn btn-danger" href="{:U('Active/jp')}">清空</a>
+		</form>
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th>奖品名称</th>
+						<th>奖品数量</th>
+						<th>已中奖数量</th>
+						<th>所属活动</th>
+						<th>中奖概率</th>
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.name}</td>
+					<td>{$vo.jpnum}</td>
+					<td>{$vo.zjnum}</td>
+					<td>{$vo.hdid}</td>
+					<td>{$vo.proba}</td>
+					<td>
+						<a href="{:U('Active/jpedit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>&nbsp;&nbsp;|
+						<a href="{:U('Active/jpdelete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Hospital/diseases')}">病种列别</a></li>
+			<li><a href="{:U('Hospital/diseadd')}">添加病种</a></li>
+			<li class="active"><a href="javascript:;">修改病种</a></li>
+		</ul>
+		<form action="{:U('Hospital/disepost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$res.id}" />
+			<div class="row-fluid">
+				<div class="span">
+					<table class="table table-bordered">
+						<tr>
+							<th>所属医院</th>
+							<td>
+								<select name="hospitalid" id="hospitalid" onchange="ischaneg1()">
+									<option value="0">--请选择--</option>
+									<volist name="res_hos" id="vo">
+									<option value="{$vo.id}" <?php if($vo['id']==$res_dpm['hospitalid']) echo 'selected';?>>{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">科室</th>
+							<td>
+								<select name="parentid" id="parentid" onchange="ischaneg2()">
+									<option value="0">--请选择--</option>
+									<volist name="res_dpmks" id="vo">
+									<option value="{$vo.id}" <?php if($vo['id']==$res_dpm['parentid']) echo 'selected';?>>{$vo.name}</option>
+									</volist>
+								</select>&nbsp;&nbsp;
+								<select name="ppid" id="ppid">
+									<option value="0">--请选择--</option>
+									<volist name="res_dpmall" id="vo">
+									<option value="{$vo.id}" <?php if($vo['id']==$res['pid']) echo 'selected';?>>{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">病种名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="{$res.name}" required placeholder="请输入病种名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript">
+		function ischaneg1() {
+			var hospitalid = $('#hospitalid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=dpm',
+				data : {
+					hospitalid : hospitalid
+				},
+				success : function(res){
+					$('#parentid').empty();
+					$('#ppid').empty();
+					$('#parentid').append('<option value="0">--请选择--</option>');
+					$('#ppid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#parentid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+
+		function ischaneg2() {
+			var parentid = $('#parentid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=dise',
+				data : {
+					parentid : parentid
+				},
+				success : function(res){
+					$('#ppid').empty();
+					$('#ppid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#ppid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+	</script>
+</body>
+</html> 

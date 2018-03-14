@@ -1,0 +1,82 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Hospital/index')}">医院基本信息管理</a></li>
+			<li class="active"><a href="javascript;">修改医院</a></li>
+		</ul>
+		<form action="{:U('Hospital/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$res.id}" />
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="90">医院名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="{$res.name}" required placeholder="请输入医院名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>电话</th>
+							<td>
+								<input type="number" style="width: 400px;" name="tel" id="tel" value="{$res.tel}" required placeholder="请输入电话"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>地址</th>
+							<td>
+								<input type="text" style="width: 400px;" name="address" id="address" value="{$res.address}" required placeholder="请输入医院地址"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>经度</th>
+							<td>
+								<input type="text" style="width: 400px;" name="longitude" id="longitude" value="{$res.longitude}" placeholder="请输入经度"/>
+								<span class="form-required"></span>
+							</td>
+						</tr>
+						<tr>
+							<th>纬度</th>
+							<td>
+								<input type="text" style="width: 400px;" name="latitude" id="latitude" value="{$res.latitude}" placeholder="请输入纬度"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th>医院LOGO</th>
+						</tr>
+						<tr>
+							<td>
+								<div style="text-align: center;">
+									<input type="hidden" name="smeta[thumb]" id="thumb" value="{$res.logo|default=''}">
+									<a href="javascript:upload_one_image('图片上传','#thumb');">
+										<if condition="empty($res['logo'])">
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand"/>
+										<else />
+											<img src="{:sp_get_image_preview_url($res['logo'])}" id="thumb-preview" width="135" style="cursor: hand"/>
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

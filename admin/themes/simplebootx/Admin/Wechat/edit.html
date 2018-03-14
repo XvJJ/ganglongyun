@@ -1,0 +1,97 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Wechat/index')}">微信公众号管理</a></li>
+			<li><a href="{:U('Wechat/add')}">添加微信公众号</a></li>
+			<li class="active"><a href="javascript;">修改微信公众号</a></li>
+		</ul>
+		<form action="{:U('Wechat/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$res.id}" />
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="90">公众号名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="{$res.name}" required placeholder="请输入公众号名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>appid</th>
+							<td>
+								<input type="text" style="width: 400px;" name="appid" id="appid" value="{$res.appid}" required placeholder="请输入appid"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>appsecret</th>
+							<td>
+								<input type="text" style="width: 400px;" name="appsecret" id="appsecret" value="{$res.appsecret}" required placeholder="请输入appsecret"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>token</th>
+							<td>
+								<input type="text" style="width: 400px;" name="token" id="token" value="{$res.token}" placeholder="请输入token"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>url</th>
+							<td>
+								<input type="text" style="width: 650px;" name="url" id="url" value="{$res.url}" required placeholder="请输入url"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>关注回复内容</th>
+							<td>
+								<input type="text" style="width: 650px;" name="hftext" id="hftext" value="{$res.hftext}" required placeholder="请输入内容"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th>公众号图标</th>
+						</tr>
+						<tr>
+							<td>
+								<div style="text-align: center;">
+									<input type="hidden" name="smeta[thumb]" id="thumb" value="{$smeta.thumb|default=''}">
+									<a href="javascript:upload_one_image('图片上传','#thumb');">
+										<if condition="empty($icon)">
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand"/>
+										<else />
+											<img src="{:sp_get_image_preview_url($icon)}" id="thumb-preview" width="135" style="cursor: hand"/>
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.WEB_ROOT;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	
+</body>
+</html>

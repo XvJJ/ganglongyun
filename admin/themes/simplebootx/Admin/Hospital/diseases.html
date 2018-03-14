@@ -1,0 +1,45 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Hospital/diseases')}">病种列别</a></li>
+			<li><a href="{:U('Hospital/diseadd')}">添加病种</a></li>
+		</ul>
+			<!-- <form method="post" action="{:U('Portal/Hospital/createMenu')}">
+				<select name="accountid" required>
+					<option value="">--请选择--</option>
+					<volist name="res_conf" id="vo">
+					<option value="{$vo.id}">{$vo.name}</option>
+					</volist>
+				</select>&nbsp;&nbsp;
+				<button class="btn btn-danger">自定义菜单授权</button>
+			</form> -->
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<th>名称</th>
+						<th>所属医院</th>
+						<th>所属科室</th>
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="res" id="vo">
+					<tr>
+						<td>{$vo.name}</td>
+						<td>{$vo.dpmc}</td>
+						<td>{$vo.dpmb}&nbsp;&nbsp;{$vo.dpma}</td>
+						<td>
+							<a href="{:U('Hospital/diseedit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+							<a href="{:U('Hospital/disedelete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+						</td>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

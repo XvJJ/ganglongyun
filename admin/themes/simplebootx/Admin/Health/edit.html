@@ -1,0 +1,80 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Health/index')}">疾病种类管理管理</a></li>
+			<li><a href="{:U('Health/add')}">添加种类</a></li>
+			<li class="active"><a href="javascript:;">修改种类</a></li>
+		</ul>
+		<form action="{:U('Health/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$res2.id}" />
+			<div class="row-fluid">
+				<div class="span">
+					<table class="table table-bordered">
+						<tr>
+							<th width="80">所属医院</th>
+							<td>
+								<select name="hospitalid" id="hospitalid">
+									<option value="0">--请选择--</option>
+									<volist name="res1" id="vo">
+										<option value="{$vo.id}" <?php if($vo['id']==$res2['hospitalid']) echo "selected"; ?>>{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="90">种类名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="{$res2.disease}" required placeholder="请填写疾病名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>选项A</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxa" id="xxa" value="{$res2.a}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项B</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxb" id="xxb" value="{$res2.b}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项C</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxc" id="xxc" value="{$res2.c}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项D</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxd" id="xxd" value="{$res2.d}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项E</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxe" id="xxe" value="{$res2.e}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项F</th>
+							<td>
+								<input type="number" style="width: 100px;" name="xxf" id="xxf" value="{$res2.f}" placeholder="请填写此选项对应分数"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

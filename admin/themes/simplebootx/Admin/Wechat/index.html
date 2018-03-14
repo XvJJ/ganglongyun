@@ -1,0 +1,58 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Wechat/index')}">微信公众号管理</a></li>
+			<li><a href="{:U('Wechat/add')}">添加微信公众号</a></li>
+		</ul>
+		<!-- <form class="well form-search" method="post" action="{:U('AdminPage/index')}">
+			{:L('POST_DATE')}
+			<input type="text" name="start_time" class="js-datetime" value="{$formget.start_time|default=''}" style="width: 120px;" autocomplete="off">-
+			<input autocomplete="off" type="text" class="js-datetime" name="end_time" value="{$formget.end_time|default=''}" style="width: 120px;"> {:L('KEYWORD')}
+			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="{:L('PLEASE_ENTER_KEYWORD')}">
+			<button class="btn btn-primary">{:L('SEARCH')}</button>
+			<a class="btn btn-danger" href="{:U('AdminPage/index')}">清空</a>
+		</form> -->
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>公众号名称</th>
+						<th>appID</th>
+						<th>appsecret</th>
+						<th>回复内容</th>
+						<!-- <th width="120">图标</th> -->
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.name}</td>
+					<td>{$vo.appid}</td>
+					<td>{$vo.appsecret}</td>
+					<td>{$vo.hftext}</td>
+					<td>
+						<a href="{:U('Wechat/edit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('Wechat/delete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+		setCookie('refersh_time', 0);
+		function refersh_window() {
+			var refersh_time = getCookie('refersh_time');
+			if (refersh_time == 1) {
+				window.location.reload();
+			}
+		}
+		setInterval(function() {
+			refersh_window()
+		}, 2000);
+	</script>
+</body>
+</html>

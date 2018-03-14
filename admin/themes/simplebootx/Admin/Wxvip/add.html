@@ -1,0 +1,173 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Wxvip/index')}">微信会员卡管理</a></li>
+			<li class="active"><a href="{:U('Wxvip/add')}">添加微信会员卡</a></li>
+		</ul>
+		<form action="{:U('Wxvip/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="90">所属公众号</th>
+							<td>
+								<select name="publicid" id="publicid">
+									<option value="0">--请选择--</option>
+									<volist name="res_pub" id="vo">
+									<option value="{$vo.id}">{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>商户名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="brand_name" id="brand_name" value="" required placeholder="请输入商户名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>会员卡logo</th>
+							<td>
+								<input type="text" style="width: 400px;" name="logo_url" id="logo_url" value="" required placeholder="请输入logo链接"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>会员卡标题</th>
+							<td>
+								<input type="text" style="width: 400px;" name="title" id="title" value="" maxlength="9" required placeholder="请输入会员卡标题"/>（最多只能输入9个字符）
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>会员卡背景色</th>
+							<td>
+								<select name="color" id="color">
+									<option value="Color010">#63b359</option>
+									<option value="Color020">#2c9f67</option>
+									<option value="Color030">#509fc9</option>
+									<option value="Color040">#5885cf</option>
+									<option value="Color050">#9062c0</option>
+									<option value="Color060">#d09a45</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>电话</th>
+							<td>
+								<input type="text" style="width: 400px;" name="service_phone" id="service_phone" value="" placeholder="请输入电话"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>商户服务</th>
+							<td>
+								<input type="checkbox" name="business_service1" value="BIZ_SERVICE_FREE_WIFI" /> 免费WIFI&nbsp;&nbsp;
+								<input type="checkbox" name="business_service2" value="BIZ_SERVICE_WITH_PET" /> 可带宠物&nbsp;&nbsp;
+								<input type="checkbox" name="business_service3" value="BIZ_SERVICE_FREE_PARK" /> 停车位&nbsp;&nbsp;
+								<input type="checkbox" name="business_service4" value="BIZ_SERVICE_DELIVER" /> 外卖服务&nbsp;&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<th>使用须知</th>
+							<td>
+								<textarea name="description" required placeholder="请填写使用须知" id="description" style="width: 500px;height: 100px"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>开卡数量</th>
+							<td>
+								<input type="text" style="width: 120px;" name="quantity" id="quantity" value="" required placeholder="请输入开卡数量"/>&nbsp;&nbsp;
+								每人限领<input type="text" style="width: 20px;" name="get_limit" id="get_limit" value="" required/>张&nbsp;&nbsp;&nbsp;
+								<input type="text" name="membership_number" id="membership_number" placeholder="请输入开卡号码" style="width: 120px;" maxlength="5" /><b style="color: red;">（只能输入5位数字或字母，此字符为会员卡的前5位）</b>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>开卡送积分</th>
+							<td><input type="text" style="width: 50px;" name="init_increase_bonus" id="init_increase_bonus" /></td>
+						</tr>
+						<tr>
+							<th>消费送积分</th>
+							<td>每消费<input type="text" style="width: 50px;" name="cost_money_unit" id="cost_money_unit" value="{$res.cost_money_unit}" required/>元，赠送<input type="text" style="width: 50px;" name="increase_bonus" id="increase_bonus" value="{$res.increase_bonus}" required/>积分
+							<span class="form-required">*</span>
+							单次上限<input type="text" style="width: 50px;" name="max_increase_bonus" id="max_increase_bonus" value="{$res.max_increase_bonus}"/>积分（请设置单次增加积分的上限，不填写表示无限制）
+							</td>
+						</tr>
+						<tr>
+							<th>积分抵扣</th>
+							<td>每使用<input type="text" style="width: 50px;" name="cost_bonus_unit" id="cost_bonus_unit" value="" required/>积分，抵扣 <input type="text" style="width: 50px;" name="reduce_money" id="reduce_money" value="" required/>元
+							<span class="form-required">*</span></td>
+						</tr>
+						<tr>
+							<th>抵扣条件</th>
+							<td>订单满<input type="text" style="width: 50px;" name="least_money_to_use_bonus" id="least_money_to_use_bonus" value=""/>元可用，单笔上限 <input type="text" style="width: 50px;" name="max_reduce_bonus" id="max_reduce_bonus" value=""/>积分（选填）
+							</td>
+						</tr>
+						<tr>
+							<th>享受折扣</th>
+							<td><input type="text" style="width: 100px;" name="discount" id="discount" value="" required/>折（请填写1-9.9之间的数字，精确到小数点后1位）
+							</td>
+						</tr>
+						<tr>
+							<th>特权说明</th>
+							<td>
+								<textarea name="prerogative" required placeholder="请填写特权说明" id="prerogative" style="width: 500px;height: 100px"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>会员卡等级</th>
+							<td>
+								<input type="text" style="width: 600px;" name="name_type_url" id="name_type_url" value="" placeholder="请填写链接"/>
+							</td>
+						</tr>
+						<tr>
+							<th>营销入口名称</th>
+							<td>
+								<input type="text" style="width: 600px;" name="promotion_url_name" id="promotion_url_name" value="" placeholder="请填写名称"/>
+							</td>
+						</tr>
+						<tr>
+							<th>营销入口链接</th>
+							<td>
+								<input type="text" style="width: 600px;" name="promotion_url" id="promotion_url" value="" placeholder="请填写链接"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th>图文详情</th>
+						</tr>
+						<tr>
+							<td>
+								<div style="text-align: center;">
+									<input type="hidden" name="smeta[thumb]" id="thumb" value="">
+									<a href="javascript:upload_one_image('图片上传','#thumb');">
+										<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand"/>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<textarea name="text" id="text" required style="width: 95%;height: 50px;"></textarea>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

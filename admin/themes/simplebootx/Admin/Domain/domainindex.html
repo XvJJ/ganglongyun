@@ -1,0 +1,56 @@
+<admintpl file="header" />
+</head>
+
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="{:U('Domain/domainindex')}">域名列表</a>
+			</li>
+			<li>
+				<a href="{:U('Domain/domainadd')}">添加域名</a>
+			</li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Domain/domainindex')}">
+			<td>
+				<select name="ipid" id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="--请选择IP--">
+					<volist name="ipres" id="vo">
+						<option value="{$vo.id}" <?php if($ipid==$vo[ 'id']) echo 'selected';?>>{$vo.ip}</option>
+					</volist>
+				</select>
+			</td>
+			<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请填写域名">&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;
+			<a class="btn btn-danger" href="{:U('Domain/domainindex')}">清空</a>
+			<b style="color: red;font-size: 0.7rem;margin-left: 2rem">注：域名请不要带“http://”搜索</b>
+		</form>
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+				<tr>
+					<th>解析IP</th>
+					<th>域名</th>
+					<th width="6%">是否加速</th>
+					<th>备注</th>
+					<th width="7%">{:L('ACTIONS')}</th>
+				</tr>
+			</thead>
+			<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.ipid}</td>
+					<td>{$vo.domain}</td>
+					<td>{$vo.isspeed}</td>
+					<td>{$vo.remark}</td>
+					<td>
+						<a href="{:U('Domain/domainedit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>&nbsp;&nbsp;|
+						<a href="{:U('Domain/domaindel',array('id'=>$vo['id']))}">{:L('DELETE')}</a>&nbsp;&nbsp;
+					</td>
+				</tr>
+			</foreach>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script src="__PUBLIC__/js/xing.js" id="mymouse"></script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>会员积分核销</title>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<link href="__TMPL__Public/assets/css/weui/example.css" rel="stylesheet">
+		<link href="__TMPL__Public/assets/css/weui/weui.min.css" rel="stylesheet">
+		<tc_include file="Public:scripts"/>
+	</head>
+	<body ontouchstart>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+	  	wx.config({
+		    debug: false,
+		    appId: '{$signPackage["appId"]}',
+		    timestamp: '{$signPackage["timestamp"]}',
+		    nonceStr: '{$signPackage["nonceStr"]}',
+		    signature: '{$signPackage["signature"]}',
+		    jsApiList: ['hideOptionMenu','closeWindow','scanQRCode']
+		});
+		wx.ready(function () {
+  			wx.hideOptionMenu();
+  		});
+
+		function CheckForm() {
+			var vipnum = $("#cardNum").val();
+			if (vipnum=="") {
+				alert('请输入会员卡号');
+				$("#vipnum").focus();
+				return false;
+			}
+			$("#tj").removeAttr("href");
+			$("#tj").addClass("weui-btn_disabled");
+			document.getElementById('myform').submit();
+			return true;
+		}
+		
+  		function scanQRCode(){
+  			var publicid = $('#publicid').val();
+  			wx.scanQRCode({
+			    desc: 'scanQRCode desc',
+			    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+			    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+			    success: function (obj) {
+			    	var cardNum = obj.resultStr; 
+			       	window.location.href=GV.ROOT+'index.php?g=Portal&m=Wxvip&a=hxpage&cardNum='+cardNum+'&publicid='+publicid;
+			    },
+			    error: function(res){
+			          if(res.errMsg.indexOf('function_not_exist') > 0){
+			               alert('版本过低请升级')
+			            }
+			     }
+			});
+  		}
+
+  		function closeWindow(){
+  			wx.closeWindow();
+  		}
+
+	</script>
+		<div class="container" id="container">
+			<div class="weui-cells__title">核销方式</div>
+			<form action="{:U('Portal/Wxvip/hxpage')}" method="post" enctype="multipart/form-data" name="myform" id="myform">
+				<input type="hidden" name="publicid" id="publicid" value="{$publicid}" />
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+	                	<div class="weui-cell__hd"><label class="weui-label">会员卡号</label></div>
+	                	<div class="weui-cell__bd">
+	                    	<input class="weui-input" type="text" name="cardNum" id="cardNum" placeholder="请输入会员卡号"/>
+	                	</div>
+	            	</div>
+		        </div>
+		        
+		        <div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:CheckForm();" id="tj" name="tj">卡号核销</a>
+        		</div>
+        		<div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:scanQRCode();">扫码核销</a>
+        		</div>
+        		<div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:closeWindow();">关 闭</a>
+        		</div>
+		    </form>
+		</div>
+	</body>
+</html>

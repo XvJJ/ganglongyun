@@ -1,0 +1,209 @@
+<admintpl file="header" />
+<style type="text/css">
+.pic-list li {
+	margin-bottom: 5px;
+}
+</style>
+<script type="text/html" id="photos-item-wrapper">
+	<li id="savedimage{id}">
+		<input id="photo-{id}" type="hidden" name="photos_url[]" value="{filepath}"> 
+		<input id="photo-{id}-name" type="text" name="photos_alt[]" value="{name}" style="width: 160px;" title="图片名称">
+		<img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;" onclick="parent.image_preview_dialog(this.src);">
+		<a href="javascript:upload_one_image('图片上传','#photo-{id}');">替换</a>
+		<a href="javascript:(function(){$('#savedimage{id}').remove();})();">移除</a>
+	</li>
+</script>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Content/article')}">文章管理</a></li>
+			<li class="active"><a href="{:U('Content/add')}" target="_self">添加文章</a></li>
+		</ul>
+		<form action="{:U('Content/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="80">所属医院</th>
+							<td>
+								<select name="hospitalid" id="hospitalid" onchange="ischaneg1()">
+									<option value="0">--请选择--</option>
+									<volist name="res" id="vo">
+									<option value="{$vo.id}">{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>文章分类</th>
+							<td>
+								<select name="parentid" id="parentid" onchange="ischaneg2()">
+									<option value="0">--请选择--</option>
+								</select>&nbsp;&nbsp;
+								<select name="ppid" id="ppid" onchange="ischaneg3()">
+									<option value="0">--请选择--</option>
+								</select>
+								<select name="pppid" id="pppid">
+									<option value="0">--请选择--</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>标题</th>
+							<td>
+								<input type="text" style="width:400px;" name="post[post_title]" id="title" required value="" placeholder="请输入标题"/>&nbsp;&nbsp;
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>关键词</th>
+							<td><input type="text" name="post[post_keywords]" id="keywords" value="" style="width: 400px" placeholder="请输入关键字"> 多关键词之间用空格或者英文逗号隔开</td>
+						</tr>
+						<tr>
+							<th>摘要</th>
+							<td>
+								<textarea name="post[post_excerpt]" id="description" style="width: 98%; height: 50px;" placeholder="请填写摘要"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>内容</th>
+							<td>
+								<script type="text/plain" id="content" name="post[post_content]"></script>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th><b>缩略图</b></th>
+						</tr>
+						<tr>
+							<td>
+								<div style="text-align: center;">
+									<input type="hidden" name="smeta[thumb]" id="thumb" value="">
+									<a href="javascript:upload_one_image('图片上传','#thumb');">
+										<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand" />
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th><b>发布时间</b></th>
+						</tr>
+						<tr>
+							<td><input type="text" name="post[post_date]" value="{:date('Y-m-d H:i:s',time())}" class="js-datetime" style="width: 160px;"></td>
+						</tr>
+						<tr>
+							<th><b>状态</b></th>
+						</tr>
+						<tr>
+							<td>
+								<label class="radio"><input type="radio" name="post[post_status]" value="1" checked>审核通过</label>
+								<label class="radio"><input type="radio" name="post[post_status]" value="0">待审核</label>
+							</td>
+						</tr>
+						<!-- <tr>
+							<td>
+								<label class="radio"><input type="radio" name="post[istop]" value="1">置顶</label>
+								<label class="radio"><input type="radio" name="post[istop]" value="0" checked>未置顶</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label class="radio"><input type="radio" name="post[recommended]" value="1">推荐</label>
+								<label class="radio"><input type="radio" name="post[recommended]" value="0" checked>未推荐</label>
+							</td>
+						</tr> -->
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">提交</button>
+				<a class="btn" href="{:U('Content/index')}">返回</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript">
+		//编辑器路径定义
+		var editorURL = GV.WEB_ROOT;
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		editorcontent = new baidu.editor.ui.Editor();
+		editorcontent.render('content');
+		function ischaneg1() {
+			var hospitalid = $('#hospitalid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=dpm',
+				data : {
+					hospitalid : hospitalid
+				},
+				success : function(res){
+					$('#parentid').empty();
+					$('#ppid').empty();
+					$('#pppid').empty();
+					$('#parentid').append('<option value="0">--请选择--</option>');
+					$('#ppid').append('<option value="0">--请选择--</option>');
+					$('#pppid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#parentid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}		
+
+		function ischaneg2() {
+			var parentid = $('#parentid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=dise',
+				data : {
+					parentid : parentid
+				},
+				success : function(res){
+					$('#ppid').empty();
+					$('#pppid').empty();
+					$('#pppid').append('<option value="0">--请选择--</option>');
+					$('#ppid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#ppid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+
+		function ischaneg3() {
+			var ppid = $('#ppid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=disname',
+				data : {
+					ppid : ppid
+				},
+				success : function(res){
+					$('#pppid').empty();
+					$('#pppid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#pppid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+	</script>
+</body>
+</html>

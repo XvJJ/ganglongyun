@@ -1,0 +1,43 @@
+<admintpl file="header" />
+</head>
+
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="{:U('Domain/ipindex')}">IP管理</a>
+			</li>
+			<li>
+				<a href="{:U('Domain/ipadd')}">添加IP</a>
+			</li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Domain/ipindex')}">
+			<input type="text" name="keyword" style="width: 200px;" value="{$keyword}" placeholder="请填写IP">&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary">搜索</button>&nbsp;&nbsp;&nbsp;
+			<a class="btn btn-danger" href="{:U('Domain/ipindex')}">清空</a>
+		</form>
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+				<tr>
+					<th>IP</th>
+					<th>备注</th>
+					<th>{:L('ACTIONS')}</th>
+				</tr>
+			</thead>
+			<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.ip}</td>
+					<td>{$vo.ipremark}</td>
+					<td>
+						<a href="{:U('Domain/ipedit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>&nbsp;&nbsp;|
+						<a href="{:U('Domain/ipdel',array('id'=>$vo['id']))}">{:L('DELETE')}</a>
+					</td>
+				</tr>
+			</foreach>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+
+</html>

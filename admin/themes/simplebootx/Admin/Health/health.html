@@ -1,0 +1,65 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Health/health')}">题目列表</a></li>
+			<li><a href="{:U('Health/tmadd')}">添加题目</a></li>
+		</ul>
+		<!-- <form class="well form-search" method="post" action="{:U('AdminPage/index')}">
+			{:L('POST_DATE')}
+			<input type="text" name="start_time" class="js-datetime" value="{$formget.start_time|default=''}" style="width: 120px;" autocomplete="off">-
+			<input autocomplete="off" type="text" class="js-datetime" name="end_time" value="{$formget.end_time|default=''}" style="width: 120px;"> {:L('KEYWORD')}
+			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="{:L('PLEASE_ENTER_KEYWORD')}">
+			<button class="btn btn-primary">{:L('SEARCH')}</button>
+			<a class="btn btn-danger" href="{:U('AdminPage/index')}">清空</a>
+		</form> -->
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>题目</th>
+						<th>题目种类</th>
+						<th>选项A</th>
+						<th>选项B</th>
+						<th>选项C</th>
+						<th>选项D</th>
+						<th>选项E</th>
+						<th>选项F</th>
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.tmname}</td>
+					<td>{$vo.tmtypeid}</td>
+					<td>{$vo.answer1}</td>
+					<td>{$vo.answer2}</td>
+					<td>{$vo.answer3}</td>
+					<td>{$vo.answer4}</td>
+					<td>{$vo.answer5}</td>
+					<td>{$vo.answer6}</td>
+					<td>
+						<a href="{:U('Health/tmedit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>|
+						<a href="{:U('Health/tmdelete',array('id'=>$vo['id']))}" class="js-ajax-delete">{:L('DELETE')}</a>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+		setCookie('refersh_time', 0);
+		function refersh_window() {
+			var refersh_time = getCookie('refersh_time');
+			if (refersh_time == 1) {
+				window.location.reload();
+			}
+		}
+		setInterval(function() {
+			refersh_window()
+		}, 2000);
+	</script>
+</body>
+</html>

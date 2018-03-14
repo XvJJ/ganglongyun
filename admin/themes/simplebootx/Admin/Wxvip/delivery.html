@@ -1,0 +1,118 @@
+<admintpl file="header" />
+<style>
+.file-upload-btn-wrapper {
+	margin-bottom: 10px;
+}
+
+.file-upload-btn-wrapper .num {
+	color: #999999;
+	float: right;
+	margin-top: 5px;
+}
+
+.file-upload-btn-wrapper .num em {
+	color: #FF5500;
+	font-style: normal;
+}
+
+.files-wrapper {
+	border: 1px solid #CCCCCC;
+}
+
+.files-wrapper ul {
+	height: 280px;
+	overflow-y: scroll;
+	padding-bottom: 10px;
+	position: relative;
+	margin: 0;
+}
+
+.files-wrapper li {
+	display: inline;
+	float: left;
+	height: 100px;
+	margin: 10px 0 0 10px;
+	width: 100px;
+	position: relative;
+	border:1px solid #CCCCCC;
+}
+
+.files-wrapper li.selected {
+	border: 1px solid #fe781e;
+}
+.files-wrapper li .upload-percent{
+	width: 100%;
+	height:100%;
+	line-height: 100px;
+	text-align: center;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.files-wrapper li .selected-icon-wrapper{
+	position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+	text-align:center;
+	line-height:20px;
+	color:#fe781e;
+	display: none;
+}
+.files-wrapper li.selected .selected-icon-wrapper{
+	display: block;
+}
+.files-wrapper li img{
+	width: 100%;
+	height: 100%;
+    vertical-align: top;
+}
+</style>
+<script type="text/javascript">
+	function CheckForm(){
+		var id = $('#id').val();
+		var outerid = $('#outerid').val();
+		var remark = $('#remark').val();
+
+		if (outerid=="") {
+			alert('请填写场景ID');
+			$("#outerid").focus();
+			return false;
+		}
+		if (remark=="") {
+			alert('请填写场景ID的备注');
+			$("#remark").focus();
+			return false;
+		}
+		$.ajax({
+			type : 'post',
+			url : GV.ROOT+'index.php?g=Portal&m=Wxvip&a=createQRcode',
+			data : {
+				id : id,
+				outerid : outerid,
+				remark : remark
+			},
+			success : function(response,status,xhr){
+				var json = eval(response);
+				$('#imgarea').append('<img width="70%" src="'+response.show_qrcode_url+'">');
+				$("#tj").removeAttr("href");
+				console.log(response.show_qrcode_url);
+			}
+		});
+	}
+	
+</script>
+</head>
+<body>
+	<form id="fm">
+		<input type="hidden" name="id" id="id" value="{$id}" />
+		<input type="text" name="outerid" id="outerid" placeholder="请填写投放场景值" />
+		<input type="text" name="remark" id="remark" placeholder="备注" />
+		<a href="javascript:CheckForm();">确定生成二维码</a>
+	</form>
+	<div id="imgarea"></div>
+</body>
+</html>

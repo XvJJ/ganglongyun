@@ -1,0 +1,59 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Wxvip/vipcenter')}">会员中心管理</a></li>
+			<!-- <li><a href="{:U('Wxvip/add')}">添加微信会员卡</a></li> -->
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Wxvip/vipcenter')}">
+			所属公众号：<select name="publicid" id="publicid">
+				<option value="">--请选择--</option>
+				<volist name="res_pub" id="vo">
+					<option value="{$vo.id}"<?php if($publicid==$vo['id']) echo 'selected';?>>{$vo.name}</option>
+				</volist>
+			</select>
+			是否激活：<select name="isjihuo" id="isjihuo">
+				<option value=''>--请选择--</option>
+				<option value='0' <?php if($isjihuo=='0') echo 'selected';?>>否</option>
+				<option value='1' <?php if($isjihuo=='1') echo 'selected';?>>是</option>
+			</select>
+			<button class="btn btn-primary">搜索</button>
+			<a class="btn btn-danger" href="{:U('Wechat/fensi')}">清空</a>
+		</form>
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>所属公众号</th>
+						<th>会员卡名称</th>
+						<th>会员卡号</th>
+						<th>会员姓名</th>
+						<th>会员电话</th>
+						<th>会员积分</th>
+						<th>来源场景</th>
+						<th>是否激活</th>
+						<!-- <th>{:L('ACTIONS')}</th> -->
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.publicid}</td>
+					<td>{$vo.title}</td>
+					<td>{$vo.cardnumber}</td>
+					<td>{$vo.name}</td>
+					<td>{$vo.tel}</td>
+					<td>{$vo.bonus}</td>
+					<td>{$vo.outerstr}</td>
+					<td>{$vo.isjihuo}</td>
+					<!-- <td>
+						<a href="{:U('Wxvip/edit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>
+					</td> -->
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

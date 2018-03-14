@@ -1,0 +1,77 @@
+<admintpl file="header" />
+<script type="text/javascript">
+function CheckForm(id,scan) {
+	$.ajax({
+		type : 'post',
+		url : GV.ROOT+'index.php?g=Admin&m=Wechat&a=scanCode',
+		data : {
+			id : id,
+			scan : scan
+		},
+		success : function(response){
+			var sm = '#sm'+id;
+			if (response.isscan=='1') {
+				$(sm).attr("href","javascript:CheckForm("+response.id+","+response.isscan+")");
+				$(sm).html('取消权限');
+			}else{
+				$(sm).attr("href","javascript:CheckForm("+response.id+","+response.isscan+")");
+				$(sm).html('添加权限');
+			}
+		}
+	});
+}
+</script>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Wechat/fensi')}">粉丝信息</a></li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Wechat/fensi')}">
+			所属公众号：<select name="publicid" id="publicid">
+				<option value="">--请选择--</option>
+				<volist name="res_pub" id="vo">
+					<option value="{$vo.id}"<?php if($publicid==$vo['id']) echo 'selected';?>>{$vo.name}</option>
+				</volist>
+			</select>
+			<button class="btn btn-primary">搜索</button>
+			<a class="btn btn-danger" href="{:U('Wechat/fensi')}">清空</a>
+		</form>
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>昵称</th>
+						<th>头像</th>
+						<th>openid</th>
+						<th>性别</th>
+						<th>城市</th>
+						<th>关注状态</th>
+						<th>所属公众号</th>
+						<th>核销权限</th>
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.nickname}</td>
+					<td width="150"><img width="50%" src="{$vo.headimgurl}"></td>
+					<td>{$vo.openid}</td>
+					<td>{$vo.sex}</td>
+					<td>{$vo.province}&nbsp;{$vo.city}</td>
+					<td>{$vo.isguanzhu}</td>
+					<td>{$vo.publicid}</td>
+					<td>
+						<?php if($vo['isscan']==0){ ?>
+						<a id="sm{$vo.id}" href="javascript:CheckForm({$vo.id},{$vo.isscan});" title="单击修改">添加权限</a>
+						<?php }else{ ?>
+						<a id="sm{$vo.id}" href="javascript:CheckForm({$vo.id},{$vo.isscan});" title="单击修改">取消权限</a>
+						<?php } ?>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

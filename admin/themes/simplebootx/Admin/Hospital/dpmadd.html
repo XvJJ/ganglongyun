@@ -1,0 +1,73 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Hospital/department')}">科室管理管理</a></li>
+			<li class="active"><a href="{:U('Hospital/dpmadd')}">添加科室</a></li>
+		</ul>
+		<form action="{:U('Hospital/dpmpost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span">
+					<table class="table table-bordered">
+						<tr>
+							<th>所属医院</th>
+							<td>
+								<select name="hospitalid" id="hospitalid" onchange="ischaneg()">
+									<option value="0">--请选择--</option>
+									<volist name="res_hos" id="vo">
+									<option value="{$vo.id}">{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">上级</th>
+							<td>
+								<select name="parentid" id="parentid">
+									<option value="0">--请选择--</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">科室名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="" required placeholder="请输入科室名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript">
+		function ischaneg() {
+			var hospitalid = $('#hospitalid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Hospital&a=dpm',
+				data : {
+					hospitalid : hospitalid
+				},
+				success : function(res){
+					console.log(res);
+					$('#parentid').empty();
+					$('#parentid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#parentid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+	</script>
+</body>
+</html> 

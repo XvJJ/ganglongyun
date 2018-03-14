@@ -1,0 +1,100 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Wxvip/index')}">微信会员卡管理</a></li>
+			<li><a href="{:U('Wxvip/add')}">添加微信会员卡</a></li>
+		</ul>
+		<!-- <form class="well form-search" method="post" action="{:U('AdminPage/index')}">
+			{:L('POST_DATE')}
+			<input type="text" name="start_time" class="js-datetime" value="{$formget.start_time|default=''}" style="width: 120px;" autocomplete="off">-
+			<input autocomplete="off" type="text" class="js-datetime" name="end_time" value="{$formget.end_time|default=''}" style="width: 120px;"> {:L('KEYWORD')}
+			<input type="text" name="keyword" style="width: 200px;" value="{$formget.keyword|default=''}" placeholder="{:L('PLEASE_ENTER_KEYWORD')}">
+			<button class="btn btn-primary">{:L('SEARCH')}</button>
+			<a class="btn btn-danger" href="{:U('AdminPage/index')}">清空</a>
+		</form> -->
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>所属公众号</th>
+						<th>会员卡名称</th>
+						<th>是否开卡</th>
+						<th>会员卡id</th>
+						<th>是否投放</th>
+						<!-- <th width="120">图标</th> -->
+						<th>{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.publicid}</td>
+					<td>{$vo.title}</td>
+					<td>{$vo.isopen}</td>
+					<td>{$vo.cardid}</td>
+					<td>{$vo.vipstate}</td>
+					<td>
+						<?php if($vo['isopen']==0){ ?>
+						<a href="{:U('Wxvip/edit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>&nbsp;&nbsp;|
+						<?php }else{ ?>
+						<a style="color: #ddd;">{:L('EDIT')}</a>&nbsp;&nbsp;|
+						<?php } ?>
+						<a href="{:U('Portal/Wxvip/delcard',array('id'=>$vo['id']))}">{:L('DELETE')}</a>&nbsp;&nbsp;|
+						<?php if($vo['isopen']==0){ ?>
+						<a href="{:U('Portal/Wxvip/createVip',array('id'=>$vo['id'],'publicid'=>$vo['publicid']))}">开卡</a>
+						<?php }else{ ?>
+						<a style="color: #ddd;">已开卡</a>&nbsp;&nbsp;|
+						<!-- <a href="{:U('Portal/Wxvip/createQRcode',array('id'=>$vo['id']))}">投放</a> -->
+						<a href="javascript:open_dialog({$vo.id});">投放</a>
+						<?php } ?>
+					</td>
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+		setCookie('refersh_time', 0);
+		function refersh_window() {
+			var refersh_time = getCookie('refersh_time');
+			if (refersh_time == 1) {
+				window.location.reload();
+			}
+		}
+		setInterval(function() {
+			refersh_window()
+		}, 2000);
+
+		function open_dialog(id){
+		    Wind.use("artDialog","iframeTools",function(){
+		        art.dialog.open(GV.ROOT+'index.php?g=Admin&m=Wxvip&a=delivery&id='+id, {
+			        title: '会员卡投放',
+			        id: new Date().getTime(),
+			        width: '650px',
+			        height: '400px',
+			        lock: true,
+			        fixed: true,
+			        background:"#CCCCCC",
+			        opacity:0,
+			        ok: function() {
+			        	console.log(123);
+			            /*if (typeof callback =='function') {
+			            	var iframewindow = this.iframe.contentWindow;
+			            	var files=iframewindow.get_selected_files();
+			            	if(files){
+			            		callback.apply(this, [this, files,extra_params]);
+			            	}else{
+			            		return false;
+			            	}
+			            	
+			            }*/
+			        },
+			        cancel: true
+			    });
+		    });
+		}
+	</script>
+</body>
+</html>

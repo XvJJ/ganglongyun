@@ -1,0 +1,92 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Wechat/wxmenu')}">微信菜单管理</a></li>
+			<li class="active"><a href="{:U('Wechat/wxmenuadd')}">添加微信自定义菜单</a></li>
+		</ul>
+		<form action="{:U('Wechat/wxmenupost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span">
+					<table class="table table-bordered">
+						<tr>
+							<th>所属公众号</th>
+							<td>
+								<select name="publicid" id="publicid" onchange="ischaneg()">
+									<option value="0">--请选择--</option>
+									<volist name="res_pub" id="vo">
+									<option value="{$vo.id}">{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">上级</th>
+							<td>
+								<select name="parentid" id="parentid">
+									<option value="0">--请选择--</option>
+									<!-- <volist name="terms" id="vo">
+										<option value="{$vo.id}">{$vo.name}</option>
+									</volist> -->
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="80">菜单名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="" required placeholder="请输入菜单名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>URL</th>
+							<td>
+								<input type="text" style="width: 650px;" name="url" id="url" value="" placeholder="请输入链接"/>
+							</td>
+						</tr>
+						<tr>
+							<th>类型</th>
+							<td>
+								<select name="type" id="type">
+									<option value="0">--请选择--</option>
+									<option value="view">view</option>
+									<option value="click">click</option>
+									<option value="scancode_push">scancode_push</option>
+								</select>
+							</td>
+						</tr>						
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript">
+		function ischaneg() {
+			var publicid = $('#publicid option:selected').val();
+			$.ajax({
+				type : 'post',
+				url : 'index.php?g=Admin&m=Wechat&a=wxpubmenu',
+				data : {
+					publicid : publicid
+				},
+				success : function(res){
+					$('#parentid').empty();
+					$('#parentid').append('<option value="0">--请选择--</option>');
+					var obj = eval(res);
+					delete obj['referer'];
+					delete obj['state'];
+					$.each(obj,function(i){ 
+						$('#parentid').append('<option value="'+obj[i].id+'">'+obj[i].name+'</option>');
+					}); 
+				}
+			});
+		}
+	</script>
+</body>
+</html> 

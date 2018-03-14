@@ -1,0 +1,37 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Domain/ipindex')}">IP管理</a></li>
+			<li class="active"><a href="{:U('Domain/ipadd')}">添加IP</a></li>
+		</ul>
+		<form action="{:U('Domain/ippost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div>
+					<table class="table table-bordered">
+						<tr>
+							<th>IP</th>
+							<td>
+								<input type="text" style="width: 400px;" name="ip" id="ip" value="" required placeholder="请输入IP"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>备注</th>
+							<td>
+								<input type="text" style="width: 400px;" name="ipremark" id="ipremark" value="" placeholder="请填写备注"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

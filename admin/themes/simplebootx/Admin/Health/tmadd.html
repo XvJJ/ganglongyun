@@ -1,0 +1,80 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Health/health')}">题目列表</a></li>
+			<li class="active"><a href="{:U('Health/tmadd')}">添加题目</a></li>
+		</ul>
+		<form action="{:U('Health/tmpost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span">
+					<table class="table table-bordered">
+						<tr>
+							<th>题目种类</th>
+							<td>
+								<select name="tmtypeid" id="tmtypeid">
+								<volist name="res1" id="vo">
+									<option value="{$vo.id}">{$vo.disease}</option>
+								</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th width="90">题目</th>
+							<td>
+								<input type="text" style="width: 400px;" name="tmname" id="tmname" value="" required placeholder="请输入题目"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>						
+						<tr>
+							<th>选项A</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer1" id="answer" value="" required placeholder="请输入选项A"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>选项B</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer2" id="answer" value="" required placeholder="请输入选项B"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>选项C</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer3" id="answer" value="" required placeholder="请输入选项C"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>选项D</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer4" id="answer" value="" placeholder="请输入选项D"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项E</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer5" id="answer" value="" placeholder="请输入选项E"/>
+							</td>
+						</tr>
+						<tr>
+							<th>选项F</th>
+							<td>
+								<input type="text" style="width: 400px;" name="answer6" id="answer" value="" placeholder="请输入选项F"/>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Active/zjmd')}">活动列表</a></li>
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Active/zjmd')}">
+			所属活动：<select name="hdid">
+				<option value="">--请选择--</option>
+				<volist name="res_hd" id="hd">
+				<option value="{$hd.id}" <?php if($hdid==$hd['id']) echo "selected";?>>{$hd.name}</option>
+				</volist>
+			</select>&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-primary">搜索</button>
+			<a class="btn btn-danger" href="{:U('Active/zjmd')}">清空</a>
+		</form>
+			<table class="table table-hover table-bordered table-list">
+				<thead>
+					<tr>
+						<!-- <th width="16"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th> -->
+						<th>姓名</th>
+						<th>电话</th>
+						<th>奖品名称</th>
+						<th>活动名称</th>
+						<th>是否领奖</th>
+						<th>所属公众号</th>
+						<!-- <th>{:L('ACTIONS')}</th> -->
+					</tr>
+				</thead>
+				<foreach name="res" item="vo">
+				<tr>
+					<td>{$vo.name}</td>
+					<td>{$vo.tel}</td>
+					<td>{$vo.jpname}</td>
+					<td>{$vo.hdname}</td>
+					<td>{$vo.islj}</td>
+					<td>{$vo.publicid}</td>
+					<!-- <td>
+						<a href="{:U('Active/edit',array('id'=>$vo['id']))}">{:L('EDIT')}</a>&nbsp;&nbsp;|
+					</td> -->
+				</tr>
+				</foreach>
+			</table>
+			<div class="pagination">{$page}</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

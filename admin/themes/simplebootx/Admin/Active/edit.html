@@ -1,0 +1,124 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Active/index')}">活动列表</a></li>
+			<li><a href="{:U('Active/add')}">添加活动</a></li>
+			<li class="active"><a href="javascript;">修改活动</a></li>
+		</ul>
+		<form action="{:U('Active/post')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$res.id}" />
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="90">所属公众号</th>
+							<td>
+								<select name="publicid" id="publicid">
+									<option value="0">--请选择--</option>
+									<volist name="res_pub" id="vo">
+									<option value="{$vo.id}" <?php if($vo['id']==$res['publicid']) echo 'selected';?>>{$vo.name}</option>
+									</volist>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>活动名称</th>
+							<td>
+								<input type="text" style="width: 400px;" name="name" id="name" value="{$res.name}" required placeholder="请填写活动名称"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>活动时间</th>
+							<td>
+								<input type="text" name="start_time" class="js-datetime" value="{$res.start_time}" style="width: 120px;" autocomplete="off" placeholder="开始时间">-
+								<input autocomplete="off" type="text" class="js-datetime" name="end_time" value="{$res.end_time}" style="width: 120px;" placeholder="结束时间">
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>活动类型</th>
+							<td>
+								<select name="type">
+									<option value="0">--请选择--</option>
+									<option value="{$res.type}"<?php if($res['type']==1) echo "selected"; ?>>大转盘</option>
+								</select>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>抽奖次数</th>
+							<td>
+								<input type="text" style="width: 400px;" name="num" id="num" value="{$res.num}" required placeholder="请填写抽奖次数限制"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>次数类型</th>
+							<td>
+								<input type="radio" name="numtype" id="numtype1" value="1" <?php if($res['numtype']==1) echo "checked='true'"; ?>/>
+								每天都可以抽相应次数&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="numtype" id="numtype2" value="2" <?php if($res['numtype']==2) echo "checked='true'"; ?> />
+								仅限的次数
+							</td>
+						</tr>
+						<tr>
+							<th>活动规则</th>
+							<td>
+								<script type="text/plain" id="content1" name="rule">{$res.rule}</script>
+							</td>
+						</tr>
+						<tr>
+							<th>活动简介</th>
+							<td>
+								<script type="text/plain" id="content2" name="profile">{$res.profile}</script>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th>图文详情</th>
+						</tr>
+						<tr>
+							<td>
+								<div style="text-align: center;">
+									<input type="hidden" name="bgimg" id="thumb" value="{$res.bgimg|default=''}">
+									<a href="javascript:upload_one_image('图片上传','#thumb');">
+										<if condition="empty($res['bgimg'])">
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb-preview" width="135" style="cursor: hand"/>
+										<else />
+											<img src="{:sp_get_image_preview_url($res['bgimg'])}" id="thumb-preview" width="135" style="cursor: hand"/>
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb-preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>请上传宽度为640px；高度不限</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript">
+		editorcontent1 = new baidu.editor.ui.Editor();
+		editorcontent2 = new baidu.editor.ui.Editor();
+
+		editorcontent1.render('content1');
+		editorcontent2.render('content2');
+	</script>
+</body>
+</html>

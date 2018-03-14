@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>会员积分核销</title>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<link href="__TMPL__Public/assets/css/weui/example.css" rel="stylesheet">
+		<link href="__TMPL__Public/assets/css/weui/weui.min.css" rel="stylesheet">
+		<style type="text/css">
+			#hea{background-color: #52574f;color: #fff;height: 8rem;}
+			.logo{float: left;margin-top: 1rem;margin-left: 1rem;}
+			.logo img{
+				width: 3rem; border-radius: 10rem;
+			}
+			.cont{padding: 0.5rem 0 0 5rem;}
+		</style>
+		<tc_include file="Public:scripts"/>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script type="text/javascript">
+			wx.config({
+			    debug: false,
+			    appId: '{$signPackage["appId"]}',
+			    timestamp: '{$signPackage["timestamp"]}',
+			    nonceStr: '{$signPackage["nonceStr"]}',
+			    signature: '{$signPackage["signature"]}',
+			    jsApiList: ['hideOptionMenu','closeWindow','scanQRCode']
+			});
+			wx.ready(function () {
+	  			wx.hideOptionMenu();
+	  		});
+	  		function closeWindow(){
+	  			wx.closeWindow();
+	  		}
+
+			function CheckForm() {
+				// 会员卡详情id
+				var id = $("#id").val();
+				var vipbonus = $("#bonus").val();
+				if (vipbonus=="") {
+					alert('请填写积分');
+					$("#bonus").focus();
+					return false;
+				}
+				var bonche = $('input:radio:checked').val();
+				var remark = $("#remark").val();
+				$("#tj").removeAttr("href");
+			    $("#tj").removeClass("weui-btn_primary");
+			    $("#tj").addClass("weui-btn_warn");
+				$.ajax({
+					type : 'post',
+					url : GV.ROOT+'index.php?g=Portal&m=Wxvip&a=setMemberCard',
+					data : {
+						id : id,
+						vipbonus : vipbonus,
+						bonche : bonche,
+						remark : remark
+					},
+					success : function(response){
+						var $toast = $('#toast');
+						if (response.errmsg=="ok") {
+							$('#jf').html('账户积分：'+response.result_bonus);
+							$("#tj").attr("href","javascript:closeWindow();");
+							if ($toast.css('display') != 'none') return;
+				            $toast.fadeIn(100);
+				            setTimeout(function () {
+				                $toast.fadeOut(100);
+				            }, 1000);
+
+							$('#tj').html('关	闭');
+						}
+					}
+				});				
+			    return true;
+			}
+		</script>
+	</head>
+	<body ontouchstart>
+		<div class="container" id="container">
+			<div id="hea">
+				<div class="logo">
+					<img src="{$res_card.logo_url}">
+				</div>
+				<div class="cont">
+					<h2>{$res_card.title}</h2>
+					会员：{$res.name}<br>
+					卡号：{$res.cardnumber}
+				</div>
+			</div>
+			<div class="weui-cells__title" id="jf">账户积分：{$res.bonus}</div>
+			<form action="{:U('Portal/Wxvip/setMemberCard')}" method="post" enctype="multipart/form-data" name="myform" id="myform">
+				<input type="hidden" name="id" id="id" value="{$res.id}" />
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+	                	<div class="weui-cell__hd"><label class="weui-label">积分</label></div>
+	                	<div class="weui-cell__bd">
+	                    	<input class="weui-input" type="number" name="bonus" id="bonus" placeholder="请填写积分"/>
+	                	</div>
+	            	</div>
+	            	<div class="weui-cell">
+	                	<label style="padding-right: 3rem;"><input type="radio" id="bonche1" name="bonche" value="1" /> 增加积分</label>
+	                	<label><input type="radio" id="bonche2" name="bonche" value="2" checked="checked" /> 减少积分</label>
+	            	</div>
+		        </div>
+		        <div class="weui-cells__title">备注</div>
+	           	<div class="weui-cells weui-cells_form">
+			        <div class="weui-cell">
+			            <div class="weui-cell__bd">
+			                <textarea class="weui-textarea" name="remark" id="remark" placeholder="请填写备注" rows="3"></textarea>
+			                <!-- <div class="weui-textarea-counter"><span>0</span>/200</div> -->
+			            </div>
+			        </div>
+			    </div>
+		        <div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:CheckForm();" id="tj" name="tj">提	交</a>
+        		</div>
+		    </form>
+		    <div id="toast" style="display: none;">
+		        <div class="weui-mask_transparent"></div>
+		        <div class="weui-toast">
+		            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+		            <p class="weui-toast__content">已完成</p>
+		        </div>
+		    </div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>会员一键激活</title>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+		<link href="__TMPL__Public/assets/css/weui/example.css" rel="stylesheet">
+		<link href="__TMPL__Public/assets/css/weui/weui.min.css" rel="stylesheet">
+		<tc_include file="Public:scripts"/>
+		<script type="text/javascript">
+			function CheckForm() {
+				var name = $("#name").val();
+				var tel = $("#tel").val();
+				var reg = /1[34578]\d{9}$/;
+				var weuiAgree = $("#weuiAgree").is(':checked');
+				if (name=="") {
+					alert('请填写姓名');
+					$("#name").focus();
+					return false;
+				}
+				if (!reg.test(tel)) {
+					alert('输入正确的手机格式');
+					$("#tel").focus();
+
+					return false;
+				}
+				if (weuiAgree==false) {
+					alert('请勾选阅读并同意会员服务声明');
+					$("#weuiAgree").focus();
+					return false;
+				}
+				$("#tj").removeAttr("href");
+			    $("#tj").addClass("weui-btn_disabled");
+			    document.getElementById('myform').submit();
+			    return true;
+			}
+		</script>
+	</head>
+	<body ontouchstart>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+	<script>
+	  	wx.config({
+		    debug: false,
+		    appId: '{$signPackage["appId"]}',
+		    timestamp: '{$signPackage["timestamp"]}',
+		    nonceStr: '{$signPackage["nonceStr"]}',
+		    signature: '{$signPackage["signature"]}',
+		    jsApiList: ['hideOptionMenu','closeWindow']
+		});
+		wx.ready(function () {
+  			wx.hideOptionMenu();
+  		});
+  		function closeWindow(){
+  			wx.closeWindow();
+  		}
+
+	</script>
+		<div class="container" id="container">
+			<div class="weui-cells__title">会员卡基本信息</div>
+			<?php if($res['isjihuo']==0){ ?>
+			<form action="{:U('Portal/Wxvip/activateurl')}" method="post" enctype="multipart/form-data" name="myform" id="myform">
+				<input type="hidden" name="id" value="{$res.id}" />
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+	                	<div class="weui-cell__hd"><label class="weui-label">姓 名</label></div>
+	                	<div class="weui-cell__bd">
+	                    	<input class="weui-input" type="text" name="name" id="name" placeholder="请输入姓名"/>
+	                	</div>
+	            	</div>
+		            <div class="weui-cell">
+		                <div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
+		                <div class="weui-cell__bd">
+		                    <input class="weui-input" type="number" name="tel" id="tel" placeholder="请输入手机号">
+		                </div>
+		            </div>
+		        </div>
+		        <label for="weuiAgree" class="weui-agree">
+		            <input name="weuiAgree" id="weuiAgree" type="checkbox" checked class="weui-agree__checkbox">
+		            <span class="weui-agree__text">
+		                阅读并同意<a href="javascript:void(0);">会员服务声明</a>
+		            </span>
+		        </label>
+		        <div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:CheckForm();" id="tj" name="tj">激 活</a>
+        		</div>
+		    </form>
+			<?php }else{ ?>
+				<div class="weui-cell">
+		            <div class="weui-cell__bd"><p>姓名</p></div>
+		            <div class="weui-cell__ft">{$res.name}</div>
+		        </div>
+		        <div class="weui-cell">
+		            <div class="weui-cell__bd"><p>电话</p></div>
+		            <div class="weui-cell__ft">{$res.tel}</div>
+		        </div>
+		        <div class="weui-cell">
+		            <div class="weui-cell__bd"><p>卡号</p></div>
+		            <div class="weui-cell__ft">{$res.cardnumber}</div>
+		        </div>
+		        <div class="weui-cell">
+		            <div class="weui-cell__bd"><p>状态</p></div>
+		            <div class="weui-cell__ft">已激活</div>
+		        </div>
+				<div class="weui-btn-area">
+            		<a class="weui-btn weui-btn_primary" href="javascript:closeWindow();">关 闭</a>
+        		</div>
+			<?php } ?>
+		</div>
+	</body>
+</html>
