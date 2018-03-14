@@ -23,12 +23,12 @@ class HomebaseController extends AppframeController
             $session_user = session('user');
             if (empty($session_user)) {
                 if (!empty($_COOKIE['thinkcmf_auth']) && $_COOKIE['thinkcmf_auth'] != "logout") {
-                    $thinkcmf_auth       = sp_authcode($_COOKIE['thinkcmf_auth'], "DECODE");
-                    $thinkcmf_auth       = explode("\t", $thinkcmf_auth);
-                    $auth_username       = $thinkcmf_auth[1];
-                    $users_model         = M('Users');
+                    $thinkcmf_auth = sp_authcode($_COOKIE['thinkcmf_auth'], "DECODE");
+                    $thinkcmf_auth = explode("\t", $thinkcmf_auth);
+                    $auth_username = $thinkcmf_auth[1];
+                    $users_model = M('Users');
                     $where['user_login'] = $auth_username;
-                    $user                = $users_model->where($where)->find();
+                    $user = $users_model->where($where)->find();
                     if (!empty($user)) {
                         $is_login = true;
                         session('user', $user);
@@ -82,11 +82,11 @@ class HomebaseController extends AppframeController
         }
         $options = json_decode($option['option_value'], true);
         //邮件标题
-        $title    = $options['title'];
-        $uid      = session('user.id');
+        $title = $options['title'];
+        $uid = session('user.id');
         $username = session('user.user_login');
 
-        $activekey   = md5($uid . time() . uniqid());
+        $activekey = md5($uid . time() . uniqid());
         $users_model = M("Users");
 
         $result = $users_model->where(array("id" => $uid))->save(array("user_activation_key" => $activekey));
@@ -97,7 +97,7 @@ class HomebaseController extends AppframeController
         $url = U('user/register/active', array("hash" => $activekey), "", true);
         //邮件内容
         $template = $options['template'];
-        $content  = str_replace(array('http://#link#', '#username#'), array($url, $username), $template);
+        $content = str_replace(array('http://#link#', '#username#'), array($url, $username), $template);
 
         $send_result = sp_send_email(session('user.user_email'), $title, $content);
 
@@ -220,7 +220,7 @@ class HomebaseController extends AppframeController
         if (is_file($template)) {
             return $template;
         }
-        $depr     = C('TMPL_FILE_DEPR');
+        $depr = C('TMPL_FILE_DEPR');
         $template = str_replace(':', $depr, $template);
 
         // 获取当前模块
@@ -265,16 +265,16 @@ class HomebaseController extends AppframeController
         $tpl_path = '';
         if (C('MOBILE_TPL_ENABLED') && sp_is_mobile() && file_exists(C("SP_TMPL_PATH") . "/" . $theme . "_mobile")) {
 //开启手机模板支持
-            $theme    = $theme . "_mobile";
+            $theme = $theme . "_mobile";
             $tpl_path = C("SP_TMPL_PATH") . $theme . "/";
         } else {
             $tpl_path = C("SP_TMPL_PATH") . $theme . "/";
         }
 
         //by ayumi手机提示模板
-        $defaultjump    = THINK_PATH . 'Tpl/dispatch_jump.tpl';
+        $defaultjump = THINK_PATH . 'Tpl/dispatch_jump.tpl';
         $action_success = sp_add_template_file_suffix($tpl_path . C("SP_TMPL_ACTION_SUCCESS"));
-        $action_error   = sp_add_template_file_suffix($tpl_path . C("SP_TMPL_ACTION_ERROR"));
+        $action_error = sp_add_template_file_suffix($tpl_path . C("SP_TMPL_ACTION_ERROR"));
         if (file_exists_case($action_success)) {
             C("TMPL_ACTION_SUCCESS", $action_success);
         } else {
