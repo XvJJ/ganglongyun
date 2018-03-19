@@ -1,56 +1,58 @@
 <admintpl file="header" />
 </head>
+
 <body>
-	<div class="wrap js-check-wrap">
-		<ul class="nav nav-tabs">
-			<li><a href="{:U('Domain/domainindex')}">域名列表</a></li>
-			<li class="active"><a href="{:U('Domain/domainadd')}">添加域名</a></li>
-		</ul>
-		<form action="{:U('Domain/domainpost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
-			<div class="row-fluid">
-				<div>
-					<table class="table table-bordered">
-						<tr>
-							<th>所属IP</th>
-							<td>
-								<select name="ipid" id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="--请选择IP--">
-									<volist name="res" id="vo">
-										<option value="{$vo.id}">{$vo.ip}</option>
-									</volist>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th>域名</th>
-							<td>
-								<input type="text" style="width: 400px;" name="domain" id="domain" value="" required placeholder="请填写域名"/>
-								<span class="form-required">*</span>
-							</td>
-						</tr>
-						<tr>
-							<th>是否加速</th>
-							<td>
-								<select name="isspeed" style="width: 70px">
-									<option value="0">否</option>
-									<option value="1">是</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th>备注</th>
-							<td>
-								<input type="text" style="width: 550px;" name="remark" id="remark" value="" placeholder="请填写备注"/>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div class="form-actions">
-				<button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
-				<a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
-			</div>
-		</form>
-	</div>
-	<script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:U('Domain/domainindex')}">域名列表</a></li>
+            <li class="active"><a href="{:U('Domain/domainadd')}">添加域名</a></li>
+        </ul>
+        <form action="{:U('Domain/domainpost')}" method="post" class="form-horizontal js-ajax-forms" enctype="multipart/form-data">
+            <div class="row-fluid">
+                <div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>所属IP</th>
+                            <td>
+                                <select name="ipid" id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="--请选择IP--">
+                                    <volist name="res" id="vo">
+                                        <option value="{$vo.id}">{$vo.ip}</option>
+                                    </volist>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>域名</th>
+                            <td>
+                                <input type="text" style="width: 400px;" name="domain" id="domain" value="" required placeholder="请填写域名" />
+                                <span class="form-required">*</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>是否加速</th>
+                            <td>
+                                <select name="isspeed" style="width: 70px">
+                                    <option value="0">否</option>
+                                    <option value="1">是</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>备注</th>
+                            <td>
+                                <input type="text" style="width: 550px;" name="remark" id="remark" value="" placeholder="请填写备注" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary js-ajax-submit" type="submit">{:L('ADD')}</button>
+                <a class="btn" href="javascript:history.back(-1);">{:L('BACK')}</a>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
 </body>
+
 </html>

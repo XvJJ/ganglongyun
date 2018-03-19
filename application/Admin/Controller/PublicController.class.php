@@ -28,11 +28,12 @@ class PublicController extends AdminbaseController
     public function login()
     {
         $admin_id = session('ADMIN_ID');
-        if (!empty($admin_id)) { //已经登录
+        if (!empty($admin_id)) {
+            //已经登录
             redirect(U("admin/index/index"));
         } else {
             $site_admin_url_password = C("SP_SITE_ADMIN_URL_PASSWORD");
-            $upw = session("__SP_UPW__");
+            $upw                     = session("__SP_UPW__");
             if (!empty($site_admin_url_password) && $upw != $site_admin_url_password) {
                 redirect(__ROOT__ . "/");
             } else {
@@ -71,7 +72,8 @@ class PublicController extends AdminbaseController
             $this->error(L('CAPTCHA_NOT_RIGHT'));
         } else {
             $user = D("Common/Users");
-            if (strpos($name, "@") > 0) { //邮箱登陆
+            if (strpos($name, "@") > 0) {
+                //邮箱登陆
                 $where['user_email'] = $name;
             } else {
                 $where['user_login'] = $name;
@@ -93,7 +95,7 @@ class PublicController extends AdminbaseController
                     //登入成功页面跳转
                     session('ADMIN_ID', $result["id"]);
                     session('name', $result["user_login"]);
-                    $result['last_login_ip'] = get_client_ip(0, true);
+                    $result['last_login_ip']   = get_client_ip(0, true);
                     $result['last_login_time'] = date("Y-m-d H:i:s");
                     $user->save($result);
                     cookie("admin_username", $name, 3600 * 24 * 30);
